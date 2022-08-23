@@ -79,7 +79,7 @@ dhc = dhc.drop(dhc[dhc["count"] == 0.0].index)
 # altair visualization
 
 chart = alt.Chart(dhc).mark_rect().encode(
-    alt.X('monthdate(date):N', title="Date"),
+    alt.X('monthdate(date):T', title="Date", axis=alt.Axis(tickCount="month",labelAngle=90)),
     alt.Y('hour:N', title="Hour of Day"),
     alt.Color('count:O', legend=alt.Legend(
         title="Failure Count", description="measured every 5 minutes"))
@@ -87,7 +87,21 @@ chart = alt.Chart(dhc).mark_rect().encode(
     title={
         "text": 'Failure Incidences 2022',
         "subtitle": 'Measured every 5 Minutes'}
-).interactive()
+)
 
+ticks = alt.Chart(pd.DataFrame({"monthstarts": pd.date_range(prange.iloc[0].name,prange.iloc[-1].name, 
+              freq='MS')})).mark_rule().encode(
+    alt.X("month(monthstarts):T")
+)
+
+test = alt.Chart(pd.DataFrame({"weekstarts": pd.date_range(prange.iloc[0].name,prange.iloc[-1].name, 
+              freq='W')})).mark_rule(color="gray",size=0.1).encode(
+    alt.X('week(weekstarts):T')
+)
+
+
+chart = (chart + test + ticks).properties(width=2500)
 chart.save("fig.html")
+chart
+
 # %%
