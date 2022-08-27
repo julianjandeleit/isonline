@@ -75,7 +75,8 @@ chart = alt.Chart(dhc).mark_rect().encode(
     alt.X('monthdate(date):T', title="Date", axis=alt.Axis(tickCount="month",labelAngle=90)),
     alt.Y('hour:N', title="Hour of Day"),
     alt.Color('count:O', legend=alt.Legend(
-        title="Failure Count", description="measured every 5 minutes"))
+        title="Failure Count", description="measured every 5 minutes")),
+    alt.Tooltip("date")
 ).properties(
     title={
         "text": 'Failure Incidences 2022',
@@ -93,7 +94,7 @@ test = alt.Chart(pd.DataFrame({"weekstarts": pd.date_range(prange.iloc[0].name,p
 )
 
 
-chart = (chart + test + ticks).properties(width=2500)
+chart = (chart + test + ticks).properties(width=2500).interactive()
 chart.save("visualization.html")
 
 # %%
