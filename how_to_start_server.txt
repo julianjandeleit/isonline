@@ -1,0 +1,2 @@
+start server with
+python server.py > server_out.txt 2>&1 &

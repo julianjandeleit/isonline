@@ -8,13 +8,10 @@ from toolz import pipe
 
 # %% read data
 
-incidences = pd.read_csv("demodata", sep=" ", header=0)
-incidences
-incidences = incidences.drop(columns=incidences.columns[2:])
-incidences
+incidences = pd.DataFrame(pd.read_csv("incidences", sep=" "))
+#incidences = incidences.drop(columns=incidences.columns[2:])
 incidences = incidences.rename(columns=dict(
     zip(incidences.columns, ["date", "time"])))
-incidences
 
 
 incidences["date"] = incidences["date"].apply(
@@ -25,21 +22,19 @@ incidences["hour"] = incidences["time"].apply(lambda x:
                                               datetime.strptime(
                                                   x, "%H:%M:%S").hour
                                               )
-incidences
 
 
-#incidences = incidences.drop(columns=["time"]); incidences
+incidences = incidences.drop(columns=["time"]); incidences
 
 # %% group by date
 hour_counts = incidences.groupby(["date"], as_index=True)[
     "hour"].value_counts()
-hour_counts
 
 incidences = incidences.set_index(["date", "hour"])
 incidences["count"] = hour_counts
 
 incidences = incidences.reset_index()
-incidences
+print(incidences)
 
 # %% build plot
 
@@ -54,13 +49,11 @@ prange = pipe(
     lambda x: x.rename(columns={0: "date"}),
     lambda x: x.set_index("date")
 )
-prange
 
 dhc = incidences[["date", "hour", "count"]]
 dhc = dhc.set_index("date")
 dhc = prange.join(dhc)
 dhc = dhc.fillna(0)
-dhc
 
 hrange = pipe(
     list(range(24)),
@@ -74,7 +67,7 @@ dhc = hrange.join(dhc.reset_index().set_index("hour")).reset_index()
 dhc["count"] = dhc["count"].fillna(0.0)
 dhc["date"] = dhc["date"].fillna(min_date)
 dhc = dhc.drop(dhc[dhc["count"] == 0.0].index)
-
+print(dhc)
 # %%
 # altair visualization
 
@@ -101,7 +94,6 @@ test = alt.Chart(pd.DataFrame({"weekstarts": pd.date_range(prange.iloc[0].name,p
 
 
 chart = (chart + test + ticks).properties(width=2500)
-chart.save("fig.html")
-chart
+chart.save("visualization.html")
 
 # %%
