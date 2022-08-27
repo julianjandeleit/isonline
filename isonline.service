@@ -1,0 +1,8 @@
+[Unit]
+Description="Monitors Network Availability"
+
+[Service]
+ExecStart=bash -c "cd /var/isonline/ && python server.py > server_out.txt 2>&1"
+
+[Install]
+WantedBy=multi-user.target
