@@ -76,7 +76,7 @@ chart = alt.Chart(dhc).mark_rect().encode(
     alt.Y('hour:N', title="Hour of Day"),
     alt.Color('count:O', legend=alt.Legend(
         title="Failure Count", description="measured every 5 minutes")),
-    alt.Tooltip("date")
+    alt.Tooltip(["date","hour","count"])
 ).properties(
     title={
         "text": 'Failure Incidences 2022',
