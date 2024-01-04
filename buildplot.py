@@ -41,6 +41,7 @@ print(incidences)
 #  select data relevant for plot
 min_date = min(incidences.date)
 max_date = max(incidences.date)
+print(f"max_date {max_date}")
 
 prange = pipe(
     pd.period_range(min_date, max_date).to_timestamp(),
@@ -72,7 +73,7 @@ print(dhc)
 # altair visualization
 
 chart = alt.Chart(dhc).mark_rect().encode(
-    alt.X('monthdate(date):T', title="Date", axis=alt.Axis(tickCount="month",labelAngle=90)),
+    alt.X('yearmonthdate(date):T', title="Date", axis=alt.Axis(tickCount="month",labelAngle=90)),
     alt.Y('hour:N', title="Hour of Day"),
     alt.Color('count:O', legend=alt.Legend(
         title="Failure Count", description="measured every 5 minutes")),

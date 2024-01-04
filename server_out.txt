@@ -1,2 +1,12 @@
-192.168.178.111 - - [27/Aug/2022 15:15:52] "GET /chart HTTP/1.1" 200 -
-192.168.178.111 - - [27/Aug/2022 15:15:52] "GET /favicon.ico HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "buildplot.py", line 5, in <module>
+    import altair as alt
+ModuleNotFoundError: No module named 'altair'
+Traceback (most recent call last):
+  File "buildplot.py", line 5, in <module>
+    import altair as alt
+ModuleNotFoundError: No module named 'altair'
+PServer.server_bind(self)
+  File "/usr/lib/python3.7/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
